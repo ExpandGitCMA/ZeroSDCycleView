@@ -26,8 +26,8 @@
     if (!_zeroSDCycleView) {
         _zeroSDCycleView = [ZeroSDCycleView cycleScrollViewWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 190) delegate:self];
         [_zeroSDCycleView setShowPageControl:YES];
-        [_zeroSDCycleView  setPageControlStyle:ZeroSDCycleViewPageContolStyleClassic];
-        [_zeroSDCycleView setPageControlAliment:ZeroSDCycleViewPageContolAlimentCenter];
+        [_zeroSDCycleView  setPageControlStyle:ZeroSDCycleViewPageContolStyleAnimated];
+        [_zeroSDCycleView setPageControlAliment:ZeroSDCycleViewPageContolAlimentRight];
         [self.view addSubview:self.zeroSDCycleView];
          [_zeroSDCycleView setAutoScrollTimeInterval:3.5f];
     }

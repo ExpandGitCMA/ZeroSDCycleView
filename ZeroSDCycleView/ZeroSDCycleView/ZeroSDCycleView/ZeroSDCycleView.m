@@ -13,7 +13,7 @@
 NSString *const ReuseIdent = @"SDCycleCell";
 NSUInteger  const SGMaxSections = 100;
 
-@interface ZeroSDCycleView ()<UICollectionViewDataSource,UICollectionViewDelegate>
+@interface ZeroSDCycleView ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDataSourcePrefetching>
 @property (nonatomic,strong) UICollectionView *collectionView;
 @property (nonatomic,strong) UIPageControl *pageControl;
 @property (nonatomic,weak) NSTimer *timer;
@@ -40,27 +40,45 @@ NSUInteger  const SGMaxSections = 100;
 -(UICollectionView*)collectionView{
     if (!_collectionView) {
         UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-        flowLayout.itemSize = CGSizeMake(self.frame.size.width, self.frame.size.height);
+        flowLayout.itemSize = self.frame.size;
+//ios 10性能优化特性 flowLayout.estimatedItemSize = CGSizeMake(self.frame.size.width, self.frame.size.height);
         flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         flowLayout.minimumLineSpacing = 0;
         _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height) collectionViewLayout:flowLayout];
         _collectionView.delegate = self;
         _collectionView.dataSource = self;
+//        _collectionView.prefetchDataSource = self;
         _collectionView.showsHorizontalScrollIndicator = NO;
         _collectionView.pagingEnabled = YES;
-        _collectionView.bounces = NO;
         _collectionView.scrollsToTop = NO;
+        [_collectionView setPrefetchingEnabled:NO];
         _collectionView.backgroundColor = [UIColor clearColor];
         [_collectionView registerClass:[ZeroSDCycleViewCell class] forCellWithReuseIdentifier:ReuseIdent];
         [self addSubview:_collectionView];
     }
     return _collectionView;
 }
+//ios 10性能优化特性
+- (void)collectionView:(UICollectionView *)collectionView prefetchItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
+   NSLog(@"prefetchItemsAtIndexPaths===");
+    
+}
+- (void)collectionView:(UICollectionView *)collectionView cancelPrefetchingForItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths  {
+    NSLog(@"prefetchItemsAtIndexPaths===");
+}
 
+
+-(void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+      //cell  =  [collectionView cellForItemAtIndexPath:indexPath];
+    
+    
+    NSLog(@"willDisplayCell===%c%ld",cell.isSelected,indexPath.item);
+}
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     ZeroSDCycleViewCell*cell = [collectionView dequeueReusableCellWithReuseIdentifier:ReuseIdent forIndexPath:indexPath];
-    NSString*url =  [_arraySource SafetyObjectAtIndex:indexPath.row];
+    NSString*url =  [_arraySource SafetyObjectAtIndex:indexPath.item];
     [cell setImageUrl:url];
     return cell;
 }
@@ -87,11 +105,13 @@ NSUInteger  const SGMaxSections = 100;
     }
 
 }
+
 -(UIPageControl*)pageControl{
     if (!_pageControl) {
         _pageControl = [[UIPageControl alloc]init];
         _pageControl.currentPage = 0;
         _pageControl.enabled = NO;
+        [_pageControl  sizeToFit];
         [self addSubview:_pageControl];
     }
     return _pageControl;
@@ -102,7 +122,7 @@ NSUInteger  const SGMaxSections = 100;
     _pageControlAliment = pageControlAliment;
     switch (_pageControlAliment) {
         case ZeroSDCycleViewPageContolAlimentRight:{
-             _pageControl.frame = CGRectMake(self.frame.size.width-110, self.frame.size.height-30, 30, 30);
+             _pageControl.frame = CGRectMake(self.frame.size.width-120, self.frame.size.height-30, 30, 30);
         }
             break;
         case ZeroSDCycleViewPageContolAlimentCenter:{
@@ -162,8 +182,11 @@ NSUInteger  const SGMaxSections = 100;
         nextItem = 0;
         nextSection++;
     }
+    
     NSIndexPath *nextIndexPath = [NSIndexPath indexPathForItem:nextItem inSection:nextSection];
     [self.collectionView scrollToItemAtIndexPath:nextIndexPath atScrollPosition:UICollectionViewScrollPositionLeft animated:YES];
+    
+    
 }
 
 
@@ -240,8 +263,8 @@ NSUInteger  const SGMaxSections = 100;
 }
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
-    int indexPageControl = (int) (scrollView.contentOffset.x/scrollView.bounds.size.width)%(_arraySource.count );
     if (!self.arraySource.count) return; // 解决清除timer时偶尔会出现的问题
+    int indexPageControl = (int) (scrollView.contentOffset.x/scrollView.bounds.size.width)%(_arraySource.count );
     if ([self.delegate respondsToSelector:@selector(cycleScrollView:didScrollToIndex:)]) {
         [self.delegate cycleScrollView:self didScrollToIndex:indexPageControl];
     }
@@ -260,10 +283,15 @@ NSUInteger  const SGMaxSections = 100;
     }
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self defaultSelectedScetion];
+}
 /// 默认选中的组
 - (void)defaultSelectedScetion {
     if (self.arraySource.count == 0||self.arraySource.count==1) return;
-    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:SGMaxSections / 2] atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
+    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
 }
 
 //解决当父View释放时，当前视图因为被Timer强引用而不能释放的问题

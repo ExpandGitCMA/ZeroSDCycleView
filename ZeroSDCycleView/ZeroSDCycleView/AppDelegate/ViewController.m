@@ -9,9 +9,10 @@
 #import "ViewController.h"
 #import "HttpRequestManager.h"
 #import "ZeroSDCycleView.h"
-
-@interface ViewController ()<ZeroSDCycleViewDelegate>
+#import "ZeroSDCAlertView.h"
+@interface ViewController ()<ZeroSDCycleViewDelegate,ZeroSDCAlertDelegate>
 @property(nonatomic,strong)ZeroSDCycleView *zeroSDCycleView;
+@property(nonatomic,strong)ZeroSDCAlertView *zeroSDCAlertView;
 @end
 
 @implementation ViewController
@@ -21,6 +22,15 @@
     [self requestNetwork];
     [self zeroSDCycleView];
 }
+
+
+- (IBAction)click:(UIButton *)sender {
+    _zeroSDCAlertView = [ZeroSDCAlertView zeroSDCAlertViewWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) delegate:self];
+     [_zeroSDCAlertView setAnimationType:ZeroSDCAlertAnimationTypeCenter];
+     [_zeroSDCAlertView showWithController:self];
+}
+
+
 
 -(ZeroSDCycleView*)zeroSDCycleView{
     if (!_zeroSDCycleView) {

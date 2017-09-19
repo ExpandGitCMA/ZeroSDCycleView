@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		85C923EE487EDEC42DB1E0B9 /* Pods_ZeroSDCycleView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22C365A95DC37A4B18AB66FC /* Pods_ZeroSDCycleView.framework */; };
+		B34B06621F7112B00023D90F /* ZeroSDCAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = B34B06611F7112B00023D90F /* ZeroSDCAlertView.m */; };
 		B3B7D3B71F613FCB005C915A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B3B7D3B61F613FCB005C915A /* main.m */; };
 		B3B7D3C01F613FCB005C915A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3B7D3BE1F613FCB005C915A /* Main.storyboard */; };
 		B3B7D3C21F613FCB005C915A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3B7D3C11F613FCB005C915A /* Assets.xcassets */; };
@@ -42,6 +43,8 @@
 /* Begin PBXFileReference section */
 		22C365A95DC37A4B18AB66FC /* Pods_ZeroSDCycleView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZeroSDCycleView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F7BDF4126EAB9D7ADA11D14 /* Pods-ZeroSDCycleView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZeroSDCycleView.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZeroSDCycleView/Pods-ZeroSDCycleView.release.xcconfig"; sourceTree = "<group>"; };
+		B34B06601F7112B00023D90F /* ZeroSDCAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZeroSDCAlertView.h; sourceTree = "<group>"; };
+		B34B06611F7112B00023D90F /* ZeroSDCAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZeroSDCAlertView.m; sourceTree = "<group>"; };
 		B3B7D3B21F613FCB005C915A /* ZeroSDCycleView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZeroSDCycleView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3B7D3B61F613FCB005C915A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B3B7D3BF1F613FCB005C915A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -105,6 +108,15 @@
 				9F7BDF4126EAB9D7ADA11D14 /* Pods-ZeroSDCycleView.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		B34B065C1F7112850023D90F /* ZeroSDCAlertView */ = {
+			isa = PBXGroup;
+			children = (
+				B34B06601F7112B00023D90F /* ZeroSDCAlertView.h */,
+				B34B06611F7112B00023D90F /* ZeroSDCAlertView.m */,
+			);
+			path = ZeroSDCAlertView;
 			sourceTree = "<group>";
 		};
 		B3B7D3A91F613FCB005C915A = {
@@ -210,6 +222,7 @@
 				B3B7D3FF1F614CA6005C915A /* AppDelegate.m */,
 				B3B7D4001F614CA6005C915A /* ViewController.h */,
 				B3B7D4011F614CA6005C915A /* ViewController.m */,
+				B34B065C1F7112850023D90F /* ZeroSDCAlertView */,
 			);
 			path = AppDelegate;
 			sourceTree = "<group>";
@@ -411,6 +424,7 @@
 			files = (
 				B3B7D4031F614CA6005C915A /* ViewController.m in Sources */,
 				B3B7D3FA1F614BED005C915A /* ZeroSDCycleViewCell.m in Sources */,
+				B34B06621F7112B00023D90F /* ZeroSDCAlertView.m in Sources */,
 				B3B7D3F81F614BED005C915A /* ZeroSDCSafety.m in Sources */,
 				B3B7D3F91F614BED005C915A /* ZeroSDCycleView.m in Sources */,
 				B3B7D3B71F613FCB005C915A /* main.m in Sources */,

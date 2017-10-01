@@ -77,7 +77,8 @@
 
 
 -(void)showWithController:(UIViewController *)viewController{
-    [viewController.view addSubview:self];
+   [viewController.view addSubview:self];
+  
     switch (_animationType) {
         case ZeroSDCAlertAnimationTypeDefault:{
             self.zeroBlackView.alpha = 0;

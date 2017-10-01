@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#define SCREEN_WIDTH  ([UIScreen mainScreen].bounds.size.width)
-#define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height)
+#import " ZeroSDCHeader.h"
+
 
 
 typedef NS_ENUM(NSInteger,  ZeroSDCAlertAnimation) {
@@ -24,7 +24,6 @@ typedef NS_ENUM(NSInteger,  ZeroSDCAlertAnimation) {
 @optional
 - (void)didSelectToIndex:(ZeroSDCAlertView *)didSelectToIndex
          toIndex:(NSInteger)index;
-
 @end
 
 

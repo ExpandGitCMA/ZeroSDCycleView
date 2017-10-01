@@ -15,14 +15,20 @@
 #import "ZeroFireworkView.h"
 #import "ZeroStarView.h"
 #import "ZeroRainbowView.h"
-@interface ViewController ()<ZeroSDCycleViewDelegate,ZeroSDCAlertDelegate>
+#import "ZeroSDCDownMenu.h"
+#import "ZeroSDCDownButton.h"
+
+@interface ViewController ()<ZeroSDCycleViewDelegate,ZeroSDCAlertDelegate,ZeroSDCDownMenuDelegate>
 @property(nonatomic,strong)ZeroSDCycleView *zeroSDCycleView;
 @property(nonatomic,strong)ZeroSDCAlertView *zeroSDCAlertView;
 @property(nonatomic,strong)ZeroBubbleView *zeroBubble;
 @property (nonatomic, strong) ZeroLineView *leftMoveView;
 @property (nonatomic, strong)ZeroFireworkView *zeroFirework;
 @property (nonatomic, strong)ZeroStarView *zeroStarView;
+@property (weak, nonatomic) IBOutlet UIImageView *eggImageView;
 @property (nonatomic, strong)ZeroRainbowView *zeroRainbow;
+@property (nonatomic, strong)ZeroSDCDownButton*down;
+@property (nonatomic, strong)ZeroSDCDownMenu*downMenu;
 @end
 
 @implementation ViewController
@@ -33,9 +39,50 @@
               [self requestNetwork];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self zeroSDCycleView];
+            [self down];
+            [self.view addSubview:self.downMenu];
         });
     });
 
+}
+
+-(ZeroSDCDownMenu *)downMenu
+{
+    if (!_downMenu){
+        _downMenu = [[ZeroSDCDownMenu alloc]initWithArraySource:[NSArray arrayWithObjects:@"收到的红包",@"发出的红包",@"退款",nil] rowHeight:45];
+        _downMenu.delegate = self;
+    }
+    return _downMenu;
+}
+
+-(ZeroSDCDownButton*)down{
+    if (!_down) {
+        _down = [[ZeroSDCDownButton alloc]initWithFrame:CGRectMake(0, 0, 100, 45)];
+        [_down addTarget:self action:@selector(downClick:) forControlEvents:UIControlEventTouchUpInside];
+        self.navigationItem.titleView = _down;
+    }
+    return _down;
+}
+
+-(void)downClick:(UIButton *)sender{
+
+    if (!sender.isSelected) {
+        sender.selected = YES;
+            NSLog(@"弹出菜单框");
+      [_downMenu showAlertView];
+    }else{
+        sender.selected = NO;
+        [_downMenu dismissAlertView];
+         NSLog(@"关闭弹出菜单框");
+    }
+}
+
+
+-(void)didSelectRowIndex:(ZeroSDCDownMenu *)didSelectRowIndex selectitle:(NSString *)title{
+    _down.selected = NO;
+    if (title) {
+         [_down setTitle:title forState:UIControlStateNormal ];
+    }
 }
 
 -(ZeroRainbowView*)zeroRainbow{
@@ -86,12 +133,23 @@
 
 - (IBAction)click:(UIButton *)sender {
     _zeroSDCAlertView = [ZeroSDCAlertView zeroSDCAlertViewWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) delegate:self];
-     [_zeroSDCAlertView setAnimationType:ZeroSDCAlertAnimationTypeCenter];
+     [_zeroSDCAlertView setAnimationType:ZeroSDCAlertAnimationTypeDefault];
      [_zeroSDCAlertView showWithController:self];
 }
 
+
 - (IBAction)egg:(UIButton *)sender {
 
+    CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale"];
+    animation.keyTimes = @[@0,@0.4,@0.8,@0.9,@1];
+    animation.values = @[@1,@0.001,@1.1,@0.9,@1];
+    animation.duration = 1.4;
+    [_eggImageView.layer addAnimation:animation forKey:nil];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(animation.duration/2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        _eggImageView.image = [UIImage imageNamed:@"领取后"];
+
+    });
+    
 }
 
 
@@ -106,7 +164,7 @@
 
 -(ZeroSDCycleView*)zeroSDCycleView{
     if (!_zeroSDCycleView) {
-        _zeroSDCycleView = [ZeroSDCycleView cycleScrollViewWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 190) delegate:self];
+        _zeroSDCycleView = [ZeroSDCycleView cycleScrollViewWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, 190) delegate:self];
         [_zeroSDCycleView setShowPageControl:YES];
         [_zeroSDCycleView  setPageControlStyle:ZeroSDCycleViewPageContolStyleAnimated];
         [_zeroSDCycleView setPageControlAliment:ZeroSDCycleViewPageContolAlimentRight];

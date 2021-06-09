@@ -1,3 +1,0 @@
-# ZeroSDCycleView
-ZeroSDCycleView开源轮播图片
-高仿SDCycleScrollView 自己写的轮播广告控件

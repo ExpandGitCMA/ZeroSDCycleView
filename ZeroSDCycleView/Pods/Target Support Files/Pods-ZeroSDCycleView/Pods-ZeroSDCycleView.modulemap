@@ -1,6 +1,0 @@
-framework module Pods_ZeroSDCycleView {
-  umbrella header "Pods-ZeroSDCycleView-umbrella.h"
-
-  export *
-  module * { export * }
-}
